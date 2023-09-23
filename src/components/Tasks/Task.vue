@@ -34,7 +34,7 @@
           flat
           round
           dense
-          @click.stop="promptToDelete" />
+          @click.stop="promptToDelete(id)" />
       <q-item-section>
 
       </q-item-section>
@@ -42,33 +42,29 @@
     </q-list>
 </template>
 <script>
-  import { store } from 'quasar/wrappers'
   import {useTaskStore} from '../../stores/taskStore'
   import { useQuasar } from 'quasar'
 
-  export default{
-    setup () {
-      const $q = useQuasar()
+  export default {
+  setup() {
+    const $q = useQuasar()
+    const taskStore = useTaskStore()
 
-      function promptToDelete () {
-        $q.dialog({
-          title: 'Confirm',
-          message: 'Would you like really delete?',
-          cancel: true,
-          persistent: true
-        }).onOk(() => {
-          useTaskStoreInstance.deleteTask() // Llama a la función deleteTask del store
-        })
-      }
-      return {confirm, promptToDelete}
-    },
-    props:["task", "id"],
-    data(){
-      return{
-      useTaskStore : useTaskStore()
-      }
+    function promptToDelete(id) {
+      $q.dialog({
+        title: 'Confirm',
+        message: 'Would you really like to delete?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        taskStore.deleteTask(id)
+      })
     }
-  }
+
+    return { promptToDelete }
+  },
+  props: ["task", "id"]
+}
 
 </script>
 

@@ -32,8 +32,9 @@ export const useTaskStore = defineStore('taskStore', {
       console.log(task.id)
       return task.completed = !task.completed;
     },
-    deleteTask(){
-      console.log("deleteTask")
+    deleteTask(id){
+      console.log("deleteTask" + id)
+      delete this.tasks[id]
     }
   },
   getters:{

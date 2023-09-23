@@ -2,7 +2,7 @@
   <q-page padding>
     <div>
       <button @click="funcionDePrueba">
-        prueba
+        Usando store desde script
       </button>
     </div>
     <div class="count">
