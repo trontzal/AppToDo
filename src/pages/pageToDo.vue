@@ -1,28 +1,28 @@
 <template>
   <q-page class="q-pa-md">
     <q-list bordered separator>
-      <!-- <task
+      <Task
         v-for="(task, key) in useTaskStore.tasks"
         :key="key"
         :task="task"
         :id="key">
-    </task> -->
-    <task>
-
-    </task>
+    </Task>
     </q-list>
   </q-page>
 </template>
 
 <script>
 import {useTaskStore} from '../stores/taskStore'
-import {task} from '../components/Tasks/Task.vue'
+import Task from 'components/Tasks/Task.vue'
 
 export default {
+  name: 'ToDo',
+  components:{
+    Task
+  },
   data(){
     return{
-      useTaskStore : useTaskStore(),
-      task
+      useTaskStore : useTaskStore()
     }
   }
 }
