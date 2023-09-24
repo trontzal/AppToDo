@@ -23,7 +23,19 @@
               v-model="taskToSubmit.name"
               :rules="[val => !!val || 'Field is required']"
               label="Task Name"
-              class="col" />
+              class="col"
+              ref="name"
+              autofocus >
+              <template v-slot:append>
+               <q-icon
+                  name="close"
+                  @click="taskToSubmit.name = ''"
+                  class="cursor-pointer"
+                  v-if="taskToSubmit.name" />
+              </template>
+            </q-input>
+
+
           </div>
           <div class="row q-mb-sm">
             <q-input
@@ -32,6 +44,11 @@
               v-model="taskToSubmit.dueDate">
 
             <template v-slot:append>
+              <q-icon
+                name="close"
+                @click="clearDueDate"
+                class="cursor-pointer"
+                v-if="taskToSubmit.dueDate" />
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                   <q-date v-model="taskToSubmit.dueDate">
@@ -45,13 +62,21 @@
           </q-input>
           </div>
 
-          <div class="row q-mb-sm">
+          <div
+            class="row q-mb-sm"
+            v-if="taskToSubmit.dueDate">
             <q-input
               outlined
               label="Due Time"
-              v-model="taskToSubmit.dueTime">
+              v-model="taskToSubmit.dueTime"
+              class="col">
 
               <template v-slot:append>
+                <q-icon
+                  name="close"
+                  @click="taskToSubmit.dueTime = ''"
+                  class="cursor-pointer"
+                  v-if="taskToSubmit.dueTime" />
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                     <q-time v-model="taskToSubmit.dueTime">
@@ -64,14 +89,12 @@
               </template>
             </q-input>
           </div>
-
         </q-card-section>
 
 
 
       <q-card-actions align="right">
         <q-btn
-          flat
           label="Save"
           color="primary"
           type="submit" />
@@ -80,10 +103,13 @@
     </q-card>
 </template>
 <script>
-  export default{
-    data(){
-      return{
-        taskToSubmit:{
+  import { useTaskStore } from 'src/stores/taskStore'
+
+  export default {
+    data() {
+      return {
+        taskStore: useTaskStore(), // Crear una instancia de la tienda
+        taskToSubmit: {
           name: "",
           dueDate: "",
           dueTime: "",
@@ -91,9 +117,21 @@
         }
       }
     },
-    methods:{
-      submitForm(){
-        console.log("submitForm")
+    methods: {
+      submitForm() {
+        this.$refs.name.validate();
+        if (!this.$refs.name.hasError) {
+          this.submitTask();
+        }
+      },
+      submitTask() {
+        this.taskStore.addTask(this.taskToSubmit);
+        this.$emit('close')
+      },
+      clearDueDate(){
+        this.taskToSubmit.dueDate = ''
+        this.taskToSubmit.dueTime = ''
+
       }
     }
   }

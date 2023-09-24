@@ -1,6 +1,10 @@
 <template>
   <q-page class="q-pa-md">
-    <q-list bordered separator>
+    <q-list
+    v-if="Object.keys(useTaskStore.tasks).length"
+      bordered
+      separator>
+
       <Task
         v-for="(task, key) in useTaskStore.tasks"
         :key="key"
@@ -21,7 +25,7 @@
     </div>
 
     <q-dialog v-model="showAddTask">
-      <AddTask></AddTask>
+      <AddTask @close="showAddTask = false" />
     </q-dialog>
   </q-page>
 </template>
@@ -40,7 +44,7 @@ export default {
   data(){
     return{
       useTaskStore : useTaskStore(),
-      showAddTask : true,
+      showAddTask : false,
     }
   }
 }
