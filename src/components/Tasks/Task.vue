@@ -7,7 +7,8 @@
       :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'">
 
       <q-item-section side top>
-        <q-checkbox v-model="task.completed" />
+        <q-checkbox
+          v-model="task.completed" />
       </q-item-section>
 
       <q-item-section>
@@ -35,9 +36,6 @@
           round
           dense
           @click.stop="promptToDelete(id)" />
-      <q-item-section>
-
-      </q-item-section>
     </q-item>
     </q-list>
 </template>
@@ -46,6 +44,11 @@
   import { useQuasar } from 'quasar'
 
   export default {
+  data(){
+    return{
+      useTaskStore : useTaskStore()
+    }
+  },
   setup() {
     const $q = useQuasar()
     const taskStore = useTaskStore()
