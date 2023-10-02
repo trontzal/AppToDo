@@ -1,9 +1,42 @@
 <template>
   <q-card>
-      <ModalHeader>Add Task</ModalHeader>
+      <q-card-section class="row">
+        <div class="text-h6">Add Task</div>
+
+        <q-space/>
+
+        <q-btn
+          v-close-popup
+          flat
+          round
+          dense
+          icon="close"
+           />
+
+      </q-card-section>
+
       <form @submit="submitForm()">
         <q-card-section class="q-pt-none">
-          <ModalTaskName :name.sync="taskToSubmit.name"/>
+          <div class="row q-mb-sm">
+            <q-input
+              outlined
+              v-model="taskToSubmit.name"
+              :rules="[val => !!val || 'Field is required']"
+              label="Task Name"
+              class="col"
+              ref="name"
+              autofocus >
+              <template v-slot:append>
+               <q-icon
+                  name="close"
+                  @click="taskToSubmit.name = ''"
+                  class="cursor-pointer"
+                  v-if="taskToSubmit.name" />
+              </template>
+            </q-input>
+
+
+          </div>
           <div class="row q-mb-sm">
             <q-input
               outlined
@@ -57,6 +90,9 @@
             </q-input>
           </div>
         </q-card-section>
+
+
+
       <q-card-actions align="right">
         <q-btn
           label="Save"
@@ -64,23 +100,17 @@
           type="submit" />
       </q-card-actions>
     </form>
-    <pre>
-      {{taskToSubmit}}
-    </pre>
     </q-card>
 </template>
 <script>
   import { useTaskStore } from 'src/stores/taskStore'
-  import ModalHeader from 'src/components/Tasks/Models/Shared/ModalHeader.vue'
-  import ModalTaskName from 'src/components/Tasks/Models/Shared/ModalTaskName.vue'
 
   export default {
-    name: 'AddTask',
     data() {
       return {
-        taskStore: useTaskStore(),
+        taskStore: useTaskStore(), // Crear una instancia de la tienda
         taskToSubmit: {
-          name: "wfsf",
+          name: "",
           dueDate: "",
           dueTime: "",
           completed: false
@@ -102,14 +132,7 @@
         this.taskToSubmit.dueDate = ''
         this.taskToSubmit.dueTime = ''
 
-      },
-      updateName(newValue) {
-        console.log("update "+newValue)
       }
-    },
-    components:{
-      ModalHeader,
-      ModalTaskName
     }
   }
 </script>

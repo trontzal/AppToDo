@@ -44,7 +44,7 @@ export default {
   data(){
     return{
       useTaskStore : useTaskStore(),
-      showAddTask : true,
+      showAddTask : false,
     }
   }
 }
