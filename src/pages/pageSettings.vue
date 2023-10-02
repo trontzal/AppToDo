@@ -1,33 +1,53 @@
-<template>
-  <q-page padding>
-    <q-btn
-      icon="delete"
-      color="negative"
-      flat
-      round
-      dense
-      @click="confirm"
-      />
-      <p>{{taskStore.tasks}}</p>
-  </q-page>
+<!-- <template>
+  <div>
+    <Prueba
+      :nombre="nombre"
+      @update:nombre="nombre = $event"
+    />
+    <p>Valor en el componente padre: {{ nombre }}</p>
+  </div>
 </template>
 
-<script setup>
-import { useQuasar } from 'quasar'
-import { useTaskStore } from '../stores/taskStore'
+<script>
+import Prueba from "src/components/Prueba.vue";
 
-const $q = useQuasar()
-const taskStore = useTaskStore()
+export default {
+  name: "App",
+  components: {
+    Prueba
+  },
+  data() {
+    return {
+      nombre: "f"
+    };
+  }
+};
+</script> -->
 
-function confirm() {
-  $q.dialog({
-    title: 'Confirm',
-    message: 'Would you like to turn on the wifi?',
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    taskStore.deleteTask()
-  })
-}
+<template>
+  <ModalName
+     v-model:name="taskToSubmit.name"
+     @changeName:name="(e)=>taskToSubmit.name = e.target.value"
+  />
+  <pre>{{ taskToSubmit }}</pre>
+</template>
 
+<script>
+  import ModalName from "src/components/Prueba.vue";
+
+  export default {
+      data(){
+          return{
+              taskToSubmit:{
+                  name: '',
+                  dueDate: '',
+                  dueTime: '',
+                  completed: false
+              }
+          }
+      },
+      components:{
+        ModalName
+      }
+  }
 </script>
